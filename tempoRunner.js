@@ -1,22 +1,28 @@
+import runner from './runner.js'
+
 // Declare and assign variables
 const canvas = document.getElementById("trackCanvas");
 const context = canvas.getContext("2d");
 let runRate = 10;
-let position = {
-    x: 10,
-    y: 10
-};
-let runnerSize = {
-    width: 10,
-    height: 40
-};
+let runnerX = 50;
+let runnerY = canvas.height - 100;
+let myRunner = new runner(10, 10, 30, 40);
+myRunner.toggleStride();
+
+//myRunner variables testing
+/*console.log(myRunner.getX);
+console.log(myRunner.getY);
+console.log(myRunner.getWidth);
+console.log(myRunner.getHeight);
+console.log(myRunner.isActive);
+console.log(myRunner.isStriding);
+*/
+/*
 let myRunner = {
     drawImage("run1.png", )
 };
-let runnerX = 50;
-let runnerY = canvas.height - 100;
-let isTrackRunning = false;
-let isActive = false;
+*/
+
 
 //Start the track game with the start button
 const startButton = document.getElementById("startButton");

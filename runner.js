@@ -1,0 +1,55 @@
+class runner {
+    constructor(x, y, width, height){
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.active = false;
+        this.stride = false;
+    }
+
+    set setX(x)
+        {this.x = x;}
+    set setY(y)
+        {this.y = y;}
+    set setWidth(width)
+        {this.width = width;}
+    set setHeight(height)
+        {this.height = height;}
+    toggleActive()
+        {this.active = !this.active;}
+    toggleStride()
+        {this.stride = !this.stride;}
+    
+    get getX()
+        {return this.x;}
+    get getY()
+        {return this.y;}
+    get getWidth()
+        {return this.width;}
+    get getHeight()
+        {return this.height;}
+    get isActive()
+        {return this.active;}
+    get isStriding()
+        {return this.stride;}
+
+    jump(){
+        this.toggleActive();
+        this.y += 10;
+    }
+    unJump(){
+        this.toggleActive();
+        this.y -= 10;
+    }
+    //this slide doesn't need an unslide since it can just be toggled again to unslide
+    slide(){
+        this.toggleActive();
+        let temp = this.width;
+        this.width = this.height;
+        this.height = temp;
+    }
+    
+}
+
+export default runner;
