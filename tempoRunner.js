@@ -1,12 +1,15 @@
 import runner from './runner.js'
+import hurdle from './hurdle.js'
 
 // Declare and assign variables
 const canvas = document.getElementById("trackCanvas");
 const context = canvas.getContext("2d");
 const run1 = document.getElementById("run1");
 const run2 = document.getElementById("run2");
+const hurdle = document.getElementById("hurdle");
 let frameTimer = 0;
-let runRate = 10;
+const runRate = 20;
+let score = 0;
 let isTrackRunning = false;
 const runX = 0;
 const runY = canvas.height - 150;
@@ -67,19 +70,13 @@ document.addEventListener(("keyup"), (event) => {
 //The game loop
 function trackLoop(){
 
-    //drawing logic for obstacles
-
+    //drawing logic for obstacle
     frameTimer +=1;
-    //update frame after frame timer has reached the rate set or on input
-    if(frameTimer > 20){
-        //update track game logic here
-        frameChange();
-        frameTimer = 0;
-    }
-    else{
-        requestAnimationFrame(trackLoop);
-    }
+    score += 1;
     let imageY = myRunner.getY;
+
+
+
     if(myRunner.isActive){
         imageY = myRunner.getY;
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -95,6 +92,15 @@ function trackLoop(){
             context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(run2, runX, imageY, runWidth, runHeight);
         }
+    }
+    //update frame after frame timer has reached the rate set or on input
+    if(frameTimer > runRate){
+        //update track game logic here
+        frameChange();
+        frameTimer = 0;
+    }
+    else{
+        requestAnimationFrame(trackLoop);
     }
 }
 
@@ -113,5 +119,9 @@ function drawJump(y, stride){
     else{
         context.drawImage(run2, runX, y, runWidth, runHeight);
     }
+}
+
+function drawHurdle(){
+    context.drawImage(hurdle, runX+100, runY, runWidth, runHeight);
 }
 
