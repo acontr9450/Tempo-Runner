@@ -6,17 +6,19 @@ const canvas = document.getElementById("trackCanvas");
 const context = canvas.getContext("2d");
 const run1 = document.getElementById("run1");
 const run2 = document.getElementById("run2");
-const hurdle = document.getElementById("hurdle");
+const hurdles = document.getElementById("hurdles");
 let frameTimer = 0;
 const runRate = 20;
 let score = 0;
 let isTrackRunning = false;
+let isHurdle = false;
 const runX = 0;
+const hurdleX = canvas.width;
 const runY = canvas.height - 150;
 const runWidth = 100;
 const runHeight = 120;
-
 let myRunner = new runner(runX, runY, runWidth, runHeight);
+let myHurdle = new hurdle(hurdleX, runY, runWidth, runHeight);
 
 //myRunner variables testing
 /*console.log(myRunner.getX);
@@ -74,23 +76,31 @@ function trackLoop(){
     frameTimer +=1;
     score += 1;
     let imageY = myRunner.getY;
-
-
+    let rand = Math.floor(Math.random() * 10);
+    hurdle.setSpeed(score);
+    myHurdle.move(hurdle.getHurdleSpeed());
+    console.log(hurdle.getHurdleSpeed());
+    if(myHurdle.getX < -100 && rand < 3){
+        myHurdle = new hurdle(hurdleX, runY, runWidth, runHeight);
+    }
 
     if(myRunner.isActive){
         imageY = myRunner.getY;
         context.clearRect(0, 0, canvas.width, canvas.height);
         drawJump(imageY, myRunner.isStriding);
+        drawHurdle(myHurdle.getX);
     }
     //draw player character
     else{
         if(myRunner.isStriding){
             context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(run1, runX, imageY, runWidth, runHeight);
+            drawHurdle(myHurdle.getX);
         }
         else{
             context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(run2, runX, imageY, runWidth, runHeight);
+            drawHurdle(myHurdle.getX);
         }
     }
     //update frame after frame timer has reached the rate set or on input
@@ -121,7 +131,13 @@ function drawJump(y, stride){
     }
 }
 
-function drawHurdle(){
-    context.drawImage(hurdle, runX+100, runY, runWidth, runHeight);
+function drawHurdle(xCoord){
+    context.drawImage(hurdles,xCoord, runY, runWidth, runHeight);
 }
 
+function gameCondition(runner, hurdle){
+    if(runner.getX === hurdle.getX && runner.getY === hurdle.getY){
+        return true;
+    }
+    return false;
+}

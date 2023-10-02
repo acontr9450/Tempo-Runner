@@ -1,13 +1,11 @@
 class hurdle {
-    static hurdles = 0;
     static hurdleSpeed = 5;
 
-    constructor(x, y, width, height, ){
+    constructor(x, y, width, height){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        hurdleCount += 1;
     }
 
     set setX(x)
@@ -19,12 +17,9 @@ class hurdle {
     set setHeight(height)
         {this.height = height;}
     static setSpeed(time){
-        this.hurdleSpeed += (time * 0.01)
+        this.hurdleSpeed += (time * 0.0000001)
     }
 
-    static getHurdles(){
-        return this.hurdles;
-    }
     static getHurdleSpeed(){
         return this.hurdleSpeed;
     }
@@ -37,8 +32,8 @@ class hurdle {
     get getHeight()
         {return this.height;}
 
-    move(){
-        this.x -= this.hurdleSpeed;
+    move(hurdleSpeed){
+        this.x -= hurdleSpeed;
     }
     
 }
