@@ -1,17 +1,19 @@
 import runner from './runner.js'
 import hurdle from './hurdle.js'
 
-// Declare and assign variables
+// Declare and assign image variables
 const canvas = document.getElementById("trackCanvas");
 const context = canvas.getContext("2d");
 const run1 = document.getElementById("run1");
 const run2 = document.getElementById("run2");
 const hurdles = document.getElementById("hurdles");
+const track = document.getElementById("track");
+
+//Declare game variables
 let frameTimer = 0;
 const runRate = 20;
 let score = 0;
 let isTrackRunning = false;
-let isHurdle = false;
 const runX = 100;
 const hurdleX = canvas.width;
 const runY = canvas.height - 150;
@@ -20,37 +22,20 @@ const runHeight = 120;
 let myRunner = new runner(runX, runY, runWidth, runHeight);
 let myHurdle = new hurdle(hurdleX, runY, runWidth, runHeight);
 
-//myRunner variables testing
-/*console.log(myRunner.getX);
-console.log(myRunner.getY);
-console.log(myRunner.getWidth);
-console.log(myRunner.getHeight);
-console.log(myRunner.isActive);
-console.log(myRunner.isStriding);
-*/
-/*
-let myRunner = {
-    drawImage("run1.png", )
-};
-*/
-
-
 //Start the track game with the start button
 const startButton = document.getElementById("startButton");
 startButton.addEventListener("click", () => {
     if(!isTrackRunning){
         isTrackRunning = true;
         startButton.disabled = true;
-        let myScore = 0;
-
-        myScore = trackLoop();
+        drawBackground();
+        trackLoop();
     }
 });
 
-//use drawImage() to get hurdle, steeple, and runners
-//handle jumping and sliding
+//handle jumping and sliding when up and down are pressed
  document.addEventListener("keydown", (event) => {
-    if (event.code === "ArrowUp" && !myRunner.isActive){
+    if (event.code === "ArrowUp" && !myRunner.isActive && !(score % 20 === 0)){
         //handle jumping
         myRunner.jump();
     }
@@ -59,37 +44,44 @@ startButton.addEventListener("click", () => {
         myRunner.slide();
     }
 });
+
 //handle letting go of jumping and sliding
 document.addEventListener(("keyup"), (event) => {
     if (event.code === "ArrowUp"){
         //handle stopping jump
         myRunner.unJump();
-
     }
     else if (event.code === "ArrowDown"){
         //handle stopping sliding
         myRunner.slide();
     }
 });
-//The game loop
+
+//The game loop for drawing and handling all the moving objects
 function trackLoop(){
-    //drawing logic for obstacle
+    //declare variables needed for game
     frameTimer +=1;
     score += 1;
     let imageY = myRunner.getY;
     let rand = Math.floor(Math.random() * 10);
+
+    //set hurdle speed and start moving it
     hurdle.setSpeed(score);
     myHurdle.move(hurdle.getHurdleSpeed());
+
+    //if hurdle goes off screen create new hurdle object and hurdle drawing
     if(myHurdle.getX < -100 && rand < 3){
         myHurdle = new hurdle(hurdleX, runY, runWidth, runHeight);
     }
+
+    //if runner is jumping draw the runner jumping
     if(myRunner.isActive){
         imageY = myRunner.getY;
         context.clearRect(0, 0, canvas.width, canvas.height);
         drawJump(imageY, myRunner.isStriding);
         drawHurdle(myHurdle.getX);
     }
-    //draw player character
+    //else draw one of the striding images for runner
     else{
         if(myRunner.isStriding){
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -103,13 +95,14 @@ function trackLoop(){
         }
     }
 
+    //if the runner and hurdle come into contact, end the game
     if(gameCondition(myRunner, myHurdle)){
         alert("Game Over!\nYour Score: " + score);
         return score;
     }
-    //update frame after frame timer has reached the rate set or on input
+
+    //update frame after frame timer has reached the frame rate set
     if(frameTimer > runRate){
-        //update track game logic here
         frameChange();
         frameTimer = 0;
     }
@@ -125,6 +118,11 @@ function frameChange(){
     requestAnimationFrame(trackLoop);
 }
 
+//draw track background
+function drawBackground(){
+    context.drawImage(track,0,0,canvas.width,canvas.height);
+}
+
 //draw runner jumping
 function drawJump(y, stride){
     if(stride){
@@ -135,10 +133,12 @@ function drawJump(y, stride){
     }
 }
 
+//draw hurdle
 function drawHurdle(xCoord){
     context.drawImage(hurdles,xCoord, runY, runWidth, runHeight);
 }
 
+//handle collision logic of game
 function gameCondition(runner, hurdle){
     const runnerX = runner.getX;
     const runnerY = runner.getY;
@@ -148,7 +148,6 @@ function gameCondition(runner, hurdle){
     const hurdleY = hurdle.getY;
     const hurdleWidth = hurdle.getWidth;
     const hurdleHeight = hurdle.getHeight;
-    console.log("RX: "+runnerX+"\nHX: "+hurdleX+"\nRY: "+runnerY+"\nHY: "+hurdleY);
     if(runnerX < hurdleX + hurdleWidth &&
         runnerX + runnerWidth > hurdleX &&
         runnerY < hurdleY + hurdleHeight &&

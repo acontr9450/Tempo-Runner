@@ -17,7 +17,7 @@ class hurdle {
     set setHeight(height)
         {this.height = height;}
     static setSpeed(time){
-        this.hurdleSpeed += (time * 0.000001)
+        this.hurdleSpeed += (time * 0.00001);
     }
 
     static getHurdleSpeed(){

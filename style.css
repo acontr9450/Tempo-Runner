@@ -1,0 +1,21 @@
+.game-heading{
+    font-family: 'Arial', sans-serif;
+    font-size: 36px; 
+    color: #00176b; 
+    text-transform: uppercase;
+    letter-spacing: 4px; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+}
+.game-instruction{
+    font-family: 'Arial', sans-serif;
+    font-size: 18px; 
+    color: #00bfac; 
+    text-transform: uppercase;
+    letter-spacing: 4px; 
+}
+#trackCanvas{
+    background-image: url("track.svg"); 
+}
+body{
+    background-color: rgba(0, 0, 0, 0.137);
+}

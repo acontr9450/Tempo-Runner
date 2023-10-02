@@ -3,13 +3,18 @@
     <head>
         <meta charset="UTF-8">
         <title>Track Runner</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <h1 class="game-heading">Tempo Runner</h1>
+        <p class="game-instruction">Run for as long as you can by holding the "up" key to jump over the hurdles.
+        </p>
         <canvas id="trackCanvas" width="800" height="600"></canvas>
         <div style="display: none;">
             <img id="run1" src="run1.svg"/>
             <img id="run2" src="run2.svg"/>
             <img id="hurdles" src="hurdle.svg"/>
+            <img id="track" src="track.svg" width="900" height="700"/>
         </div>
         <button id="startButton">Start</button>
         <script src="tempoRunner.js" type="module"></script>
