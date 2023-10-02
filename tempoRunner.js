@@ -12,7 +12,7 @@ const runRate = 20;
 let score = 0;
 let isTrackRunning = false;
 let isHurdle = false;
-const runX = 0;
+const runX = 100;
 const hurdleX = canvas.width;
 const runY = canvas.height - 150;
 const runWidth = 100;
@@ -41,7 +41,9 @@ startButton.addEventListener("click", () => {
     if(!isTrackRunning){
         isTrackRunning = true;
         startButton.disabled = true;
-        trackLoop();
+        let myScore = 0;
+
+        myScore = trackLoop();
     }
 });
 
@@ -71,7 +73,6 @@ document.addEventListener(("keyup"), (event) => {
 });
 //The game loop
 function trackLoop(){
-
     //drawing logic for obstacle
     frameTimer +=1;
     score += 1;
@@ -79,11 +80,9 @@ function trackLoop(){
     let rand = Math.floor(Math.random() * 10);
     hurdle.setSpeed(score);
     myHurdle.move(hurdle.getHurdleSpeed());
-    console.log(hurdle.getHurdleSpeed());
     if(myHurdle.getX < -100 && rand < 3){
         myHurdle = new hurdle(hurdleX, runY, runWidth, runHeight);
     }
-
     if(myRunner.isActive){
         imageY = myRunner.getY;
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -102,6 +101,11 @@ function trackLoop(){
             context.drawImage(run2, runX, imageY, runWidth, runHeight);
             drawHurdle(myHurdle.getX);
         }
+    }
+
+    if(gameCondition(myRunner, myHurdle)){
+        alert("Game Over!\nYour Score: " + score);
+        return score;
     }
     //update frame after frame timer has reached the rate set or on input
     if(frameTimer > runRate){
@@ -136,7 +140,19 @@ function drawHurdle(xCoord){
 }
 
 function gameCondition(runner, hurdle){
-    if(runner.getX === hurdle.getX && runner.getY === hurdle.getY){
+    const runnerX = runner.getX;
+    const runnerY = runner.getY;
+    const runnerWidth = runner.getWidth;
+    const runnerHeight = runner.getHeight;
+    const hurdleX = hurdle.getX;
+    const hurdleY = hurdle.getY;
+    const hurdleWidth = hurdle.getWidth;
+    const hurdleHeight = hurdle.getHeight;
+    console.log("RX: "+runnerX+"\nHX: "+hurdleX+"\nRY: "+runnerY+"\nHY: "+hurdleY);
+    if(runnerX < hurdleX + hurdleWidth &&
+        runnerX + runnerWidth > hurdleX &&
+        runnerY < hurdleY + hurdleHeight &&
+        runnerY + runnerHeight > hurdleY){
         return true;
     }
     return false;
