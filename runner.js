@@ -6,6 +6,7 @@ class runner {
         this.height = height;
         this.active = false;
         this.stride = false;
+        this.frame = 21;
     }
 
     set setX(x)
@@ -16,6 +17,8 @@ class runner {
         {this.width = width;}
     set setHeight(height)
         {this.height = height;}
+    set setFrame(frame)
+        {this.frame = frame;}
     toggleActive()
         {this.active = !this.active;}
     toggleStride()
@@ -33,21 +36,24 @@ class runner {
         {return this.active;}
     get isStriding()
         {return this.stride;}
+    get getFrame()
+        {return this.frame;}
 
     jump(){
-        this.toggleActive();
-        this.y += 10;
+        this.active = true;
+        this.y -= 75;
     }
     unJump(){
-        this.toggleActive();
-        this.y -= 10;
+        this.active = false;
+        this.y += 75;
+         this.frame += 1;
     }
     //this slide doesn't need an unslide since it can just be toggled again to unslide
     slide(){
         this.toggleActive();
         let temp = this.width;
         this.width = this.height;
-        this.height = temp;
+        this.height = temp; 
     }
     
 }
